@@ -7,7 +7,7 @@ import { Input } from './Input';
 
 interface KnowledgeBaseViewProps {
   documents: Document[];
-  onAddDocument: (input: { title?: string, content?: string, file?: File }) => void;
+  onAddDocument: (input: { title?: string, content?: string, file?: File }) => Promise<void> | void;
   onRemoveDocument: (id: string) => void;
   onUpdateDocument: (doc: Document) => void;
 }
@@ -24,6 +24,7 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({
   const [newContent, setNewContent] = React.useState('');
   const [searchTerm, setSearchTerm] = React.useState('');
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
+  const [isSaving, setIsSaving] = React.useState(false); // Local loading state
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleEdit = (doc: Document) => {
@@ -34,27 +35,35 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({
   };
 
   const handleSave = async () => {
-    if ((!newTitle.trim() && !selectedFile) || (!newContent.trim() && !selectedFile)) return;
+    // Validation: Require EITHER (File) OR (Content). Title is optional (defaults to Untitled/Filename)
+    if (!selectedFile && !newContent.trim()) return;
     
-    if (editingId) {
-       // Just update text
-       onUpdateDocument({ 
-           id: editingId,
-           title: newTitle,
-           content: newContent,
-           createdAt: Date.now(),
-           status: 'indexing'
-       });
-    } else {
-       // Add new with potential file
-       onAddDocument({
-           title: newTitle,
-           content: newContent,
-           file: selectedFile || undefined
-       });
+    setIsSaving(true);
+    try {
+        if (editingId) {
+           // Update existing
+           await onUpdateDocument({ 
+               id: editingId,
+               title: newTitle || 'بدون عنوان',
+               content: newContent,
+               createdAt: Date.now(),
+               status: 'indexing'
+           });
+        } else {
+           // Add new
+           await onAddDocument({
+               title: newTitle,
+               content: newContent,
+               file: selectedFile || undefined
+           });
+        }
+        resetForm();
+    } catch (error) {
+        console.error("Error saving document:", error);
+        // We rely on App.tsx to show global error, but we stop loading here
+    } finally {
+        setIsSaving(false);
     }
-
-    resetForm();
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,6 +81,7 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({
     setSelectedFile(null);
     setIsAdding(false);
     setEditingId(null);
+    setIsSaving(false);
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
@@ -137,17 +147,19 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
                 autoFocus
+                disabled={isSaving}
                 className="bg-slate-950 border-slate-800"
               />
 
               {!editingId && (
-                  <div className="border-2 border-dashed border-slate-700 hover:border-blue-500/50 bg-slate-950/50 rounded-xl p-8 transition-all group text-center cursor-pointer relative">
+                  <div className={`border-2 border-dashed border-slate-700 hover:border-blue-500/50 bg-slate-950/50 rounded-xl p-8 transition-all group text-center cursor-pointer relative ${isSaving ? 'opacity-50 pointer-events-none' : ''}`}>
                         <input 
                             type="file" 
                             ref={fileInputRef}
                             onChange={handleFileChange}
                             accept=".txt,.md,.pdf,.docx"
                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                            disabled={isSaving}
                         />
                         {selectedFile ? (
                              <div className="flex flex-col items-center gap-2">
@@ -180,12 +192,17 @@ export const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({
                 className="w-full h-32 bg-slate-950 border border-slate-800 rounded-lg p-4 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none font-mono leading-relaxed disabled:opacity-50 disabled:cursor-not-allowed"
                 value={newContent}
                 onChange={(e) => setNewContent(e.target.value)}
-                disabled={!!selectedFile}
+                disabled={!!selectedFile || isSaving}
               />
 
               <div className="flex gap-3 justify-end pt-2">
-                <Button variant="ghost" onClick={resetForm} size="sm">انصراف</Button>
-                <Button onClick={handleSave} size="sm" disabled={!newTitle && !selectedFile && !newContent}>
+                <Button variant="ghost" onClick={resetForm} size="sm" disabled={isSaving}>انصراف</Button>
+                <Button 
+                    onClick={handleSave} 
+                    size="sm" 
+                    disabled={(!newContent.trim() && !selectedFile) || isSaving}
+                    isLoading={isSaving}
+                >
                   {editingId ? <Save className="w-3 h-3 ml-2" /> : <Cpu className="w-3 h-3 ml-2" />}
                   {editingId ? 'ذخیره تغییرات' : 'پردازش و وکتورایز'}
                 </Button>
