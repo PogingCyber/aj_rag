@@ -3,9 +3,13 @@ import * as pdfjsLib from 'pdfjs-dist';
 // @ts-ignore
 import mammoth from 'mammoth';
 
+// Robustly handle PDF.js imports which differ between environments (Node/Vite/CDN)
+const pdfjs = (pdfjsLib as any).default || pdfjsLib;
+
 // Configure Worker
-// In a Vite environment, we can point to the CDN for the worker to avoid complex build setup for workers
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`;
+if (typeof window !== 'undefined' && 'Worker' in window) {
+    pdfjs.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+}
 
 export interface ProcessedFile {
     title: string;
@@ -47,7 +51,7 @@ const readTextFile = (file: File): Promise<string> => {
 
 const readPdfFile = async (file: File): Promise<string> => {
     const arrayBuffer = await file.arrayBuffer();
-    const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+    const loadingTask = pdfjs.getDocument({ data: arrayBuffer });
     const pdf = await loadingTask.promise;
     let fullText = '';
 
