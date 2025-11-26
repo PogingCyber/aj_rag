@@ -1,18 +1,11 @@
 
-// @ts-ignore
-import * as pdfjsLibModule from 'pdfjs-dist';
+import * as pdfjsLib from 'pdfjs-dist';
 // @ts-ignore
 import mammoth from 'mammoth';
 
-// Fix for ESM import of pdfjs-dist: Handle default export or named exports
-const pdfjsLib = (pdfjsLibModule as any).default || pdfjsLibModule;
-
-// Set worker source for PDF.js to the matching version on jsDelivr (standard script format)
-if (pdfjsLib.GlobalWorkerOptions) {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
-} else {
-    console.warn("Nexus RAG: Could not configure PDF.js worker. PDF parsing might fail.");
-}
+// Configure Worker
+// In a Vite environment, we can point to the CDN for the worker to avoid complex build setup for workers
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`;
 
 export interface ProcessedFile {
     title: string;
@@ -54,7 +47,6 @@ const readTextFile = (file: File): Promise<string> => {
 
 const readPdfFile = async (file: File): Promise<string> => {
     const arrayBuffer = await file.arrayBuffer();
-    // Using the resolved pdfjsLib object
     const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
     const pdf = await loadingTask.promise;
     let fullText = '';
